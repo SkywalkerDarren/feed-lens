@@ -1,0 +1,11 @@
+{
+  "appName": {
+    "message": "Feed Lens · Social labels"
+  },
+  "appDescription": {
+    "message": "Custom labels for Weibo, Threads and X, with separate settings for each platform."
+  },
+  "settings": {
+    "message": "Settings"
+  }
+}

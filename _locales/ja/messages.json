@@ -1,0 +1,11 @@
+{
+  "appName": {
+    "message": "Feed Lens · 投稿ラベル"
+  },
+  "appDescription": {
+    "message": "Weibo・Threads・X の投稿にカスタムラベルを表示。サービスごとに設定できます。"
+  },
+  "settings": {
+    "message": "設定"
+  }
+}

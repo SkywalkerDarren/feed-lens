@@ -1,0 +1,11 @@
+{
+  "appName": {
+    "message": "Feed Lens · Etiquetas sociales"
+  },
+  "appDescription": {
+    "message": "Etiquetas personalizadas para Weibo, Threads y X, con ajustes por plataforma."
+  },
+  "settings": {
+    "message": "Ajustes"
+  }
+}

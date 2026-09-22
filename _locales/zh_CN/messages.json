@@ -1,0 +1,11 @@
+{
+  "appName": {
+    "message": "Feed Lens · 社媒标签"
+  },
+  "appDescription": {
+    "message": "为微博、Threads 和 X 添加自定义标签，各平台独立设置。"
+  },
+  "settings": {
+    "message": "设置"
+  }
+}

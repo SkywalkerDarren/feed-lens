@@ -1,0 +1,13 @@
+{
+  "name": "feed-lens",
+  "version": "0.4.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Customizable text labels for Weibo, Threads and X",
+  "scripts": {
+    "test": "node --test *.test.mjs",
+    "package": "python3 scripts/package.py"
+  },
+  "engines": { "node": ">=22" }
+}
