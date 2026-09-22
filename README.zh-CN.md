@@ -3,7 +3,7 @@
   <h1>Feed Lens</h1>
   <p>用自己的标签，从自己的视角阅读信息流。</p>
   <p><a href="README.md">English</a> · <strong>简体中文</strong></p>
-  <p><a href="https://github.com/SkywalkerDarren/feed-lens/releases">下载</a> · <a href="#快速开始">快速开始</a> · <a href="https://skywalkerdarren.github.io/feed-lens/privacy.html?lang=zh">隐私说明</a> · <a href="https://github.com/SkywalkerDarren/feed-lens/issues">问题反馈</a></p>
+  <p><a href="https://github.com/SkywalkerDarren/feed-lens/releases">下载</a> · <a href="#快速开始">快速开始</a> · <a href="https://darrenis.top/products/feed-lens/privacy/?lang=zh">隐私说明</a> · <a href="https://github.com/SkywalkerDarren/feed-lens/issues">问题反馈</a></p>
 </div>
 
 Feed Lens 是一款开源 Chrome 扩展，为 **微博、Threads 和 X** 的帖子添加自定义文字标签。使用自己的标签定义和 TypeSafe API key，从「讲什么」与「如何表达」两个角度阅读帖子。
@@ -64,7 +64,7 @@ Feed Lens 是一款开源 Chrome 扩展，为 **微博、Threads 和 X** 的帖�
 
 启用平台后，已加载的帖子文字、平台名称及标签规则会 **直接发送至 TypeSafe**。这可能包括屏幕外预加载的帖子、引用文字，以及你有权查看的非公开帖子。分类使用提取到的正文，单条最多 12,000 字符。
 
-Key 和设置保存在本机 `chrome.storage.local`，不通过 Chrome 同步。Feed Lens 没有自建中转服务器、遥测或广告系统。数据范围、存储与控制方式详见 [隐私说明](https://skywalkerdarren.github.io/feed-lens/privacy.html?lang=zh)。
+Key 和设置保存在本机 `chrome.storage.local`，不通过 Chrome 同步。Feed Lens 没有自建中转服务器、遥测或广告系统。数据范围、存储与控制方式详见 [隐私说明](https://darrenis.top/products/feed-lens/privacy/?lang=zh)。
 
 扩展在页面加载过程中检测稳定的帖子文字，后台最多并发处理八个任务；相同的进行中请求会合并，最近至多 300 条结果缓存在后台内存。临时服务错误独立重试，并设有超时限制。齿轮菜单提供进度和恢复操作。
 

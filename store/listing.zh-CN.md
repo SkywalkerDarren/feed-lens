@@ -24,7 +24,7 @@ Feed Lens 根据帖子文字显示“讲什么”和“如何表达”标签，�
 ## 提交前填写
 
 - 源码：https://github.com/SkywalkerDarren/feed-lens
-- 支持：https://github.com/SkywalkerDarren/feed-lens/issues
-- 隐私政策 URL：https://skywalkerdarren.github.io/feed-lens/privacy.html （发布 Pages 后验证）
+- 支持：https://darrenis.top/products/feed-lens/support/
+- 隐私政策 URL：https://darrenis.top/products/feed-lens/privacy/ （已验证上线）
 - 发布者：SkywalkerDarren；隐私联系邮箱：contact@darrenis.top。
 - 商店页面链接：尚未创建。

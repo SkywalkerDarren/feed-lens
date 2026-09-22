@@ -3,7 +3,7 @@
   <h1>Feed Lens</h1>
   <p>Your labels. Your perspective on the feed.</p>
   <p><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
-  <p><a href="https://github.com/SkywalkerDarren/feed-lens/releases">Download</a> · <a href="#quick-start">Quick start</a> · <a href="https://skywalkerdarren.github.io/feed-lens/privacy.html?lang=en">Privacy</a> · <a href="https://github.com/SkywalkerDarren/feed-lens/issues">Feedback</a></p>
+  <p><a href="https://github.com/SkywalkerDarren/feed-lens/releases">Download</a> · <a href="#quick-start">Quick start</a> · <a href="https://darrenis.top/products/feed-lens/privacy/?lang=en">Privacy</a> · <a href="https://github.com/SkywalkerDarren/feed-lens/issues">Feedback</a></p>
 </div>
 
 Feed Lens is an open-source Chrome extension that adds customizable text labels to **Weibo, Threads and X**. See what a post is about and how it communicates, using your own label definitions and TypeSafe API key.
@@ -64,7 +64,7 @@ Changing the interface language preserves saved custom labels. **Restore presets
 
 Enabled platforms send loaded post text, the platform name and your label rules **directly to TypeSafe**. This can include off-screen preloaded posts, quoted text and non-public posts you can access. Classification uses extracted text, capped at 12,000 characters per post.
 
-Your key and settings are stored locally in `chrome.storage.local`, without Chrome sync. Feed Lens operates no relay server, telemetry or advertising system. See the [privacy notice](https://skywalkerdarren.github.io/feed-lens/privacy.html?lang=en) for data scope, storage and controls.
+Your key and settings are stored locally in `chrome.storage.local`, without Chrome sync. Feed Lens operates no relay server, telemetry or advertising system. See the [privacy notice](https://darrenis.top/products/feed-lens/privacy/?lang=en) for data scope, storage and controls.
 
 The extension detects stable post text as the page loads. Up to eight background tasks run concurrently; matching in-flight requests are merged, and up to 300 recent results are cached in background memory. Temporary service errors retry independently with bounded timeouts. The gear menu shows progress and recovery actions.
 
