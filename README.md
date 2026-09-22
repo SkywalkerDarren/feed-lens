@@ -8,9 +8,13 @@
 
 Feed Lens is an open-source Chrome extension that adds customizable text labels to **Weibo, Threads and X**. See what a post is about and how it communicates, using your own label definitions and TypeSafe API key.
 
-![Feed Lens labels beside post authors, using synthetic posts and simulated classification results](store/screenshot-labels.png)
+![Feed Lens on X: topic and expression labels beside post authors](docs/screenshots/x-labels.png)
 
-*Actual label components shown with synthetic posts and simulated results.*
+*X — content topics and expression styles at a glance.*
+
+![Feed Lens on Weibo: topic and expression labels above a repost](docs/screenshots/weibo-labels.png)
+
+*Weibo — multiple labels displayed beside the author.*
 
 ## Features
 

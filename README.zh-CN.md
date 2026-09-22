@@ -8,9 +8,13 @@
 
 Feed Lens 是一款开源 Chrome 扩展，为 **微博、Threads 和 X** 的帖子添加自定义文字标签。使用自己的标签定义和 TypeSafe API key，从「讲什么」与「如何表达」两个角度阅读帖子。
 
-![作者名字旁的 Feed Lens 标签，使用合成帖子与模拟分类结果](store/screenshot-labels.png)
+![X 帖子作者名字旁的 Feed Lens 内容主题与表达方式标签](docs/screenshots/x-labels.png)
 
-*图中使用真实标签组件、合成帖子与模拟分类结果。*
+*X：一眼查看帖子的内容主题与表达方式。*
+
+![微博转发帖子作者旁的 Feed Lens 内容主题与表达方式标签](docs/screenshots/weibo-labels.png)
+
+*微博：在作者旁展示多个分类标签。*
 
 ## 功能
 
