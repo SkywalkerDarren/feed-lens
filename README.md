@@ -29,7 +29,7 @@ You need **Chrome 114+** and a **TypeSafe account with an API key and available 
 2. Open `chrome://extensions`, enable **Developer mode**, then choose **Load unpacked**.
 3. Select the extracted folder containing `manifest.json`.
 4. Open Feed Lens settings. Choose **API connection**, enter your key and save it.
-5. Select Weibo, Threads or X, turn on automatic labeling, and save that platform.
+5. Select Weibo, Threads or X, turn on automatic labeling. The switch takes effect immediately.
 6. Refresh the social website to start labeling loaded posts.
 
 New installations start with all platforms paused. The API key is shared across platforms; dictionaries and switches are separate.
@@ -40,7 +40,7 @@ New installations start with all platforms paused. The API key is shared across 
 
 ![Feed Lens settings with platform navigation and editable label columns](store/screenshot-settings.png)
 
-Choose a platform in the sidebar, then select **Content topics** or **Expression styles**. Add, search, edit or remove labels and save the current platform. Switching platforms retains your unsaved edits while the settings page remains open.
+Choose a platform in the sidebar, then select **Content topics** or **Expression styles**. Add, search, edit or remove labels and save the current platform. Save applies only to labels. Switching platforms retains unsaved edits; closing or refreshing the settings page prompts before discarding them.
 
 | Field | Purpose | Limit |
 | --- | --- | --- |

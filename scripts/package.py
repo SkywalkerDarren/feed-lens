@@ -10,7 +10,7 @@ package = json.loads((root / "package.json").read_text())
 assert package["version"] == manifest["version"], "Version mismatch"
 files = [
     "manifest.json", "adapters.js", "background.js", "content.js", "core.js",
-    "platforms.js", "transport.js", "i18n.js", "presets.js", "config.js", "options.html", "options.js", "options.css",
+    "settings-writer.js", "platforms.js", "transport.js", "i18n.js", "presets.js", "config.js", "options.html", "options.js", "options.css",
     "popup.html", "popup.js", "privacy.html", "privacy.js", "LICENSE", "NOTICE",
     *manifest["icons"].values(),
     *[str(path.relative_to(root)) for path in sorted((root / "_locales").glob("*/messages.json"))],

@@ -2,6 +2,7 @@ import './i18n.js';
 import {validateLabels,labelLimits} from './core.js';
 import {localizedDefaults} from './presets.js';
 import {platforms,platformFromUrl,settingsKey,platformSettings} from './platforms.js';
+import {createPlatformWriter} from './settings-writer.js';
 import {configLimit,exportConfig,parseConfig,importedStorage} from './config.js';
 const {t,resolve,setLanguage,languages}=FeedLensI18n;
 const $=id=>document.getElementById(id);
@@ -12,13 +13,19 @@ if(!Object.hasOwn(platforms,platform))platform='weibo';
 setLanguage(language);
 const drafts=new Map(platformIds.map(id=>[id,platformSettings(raw,id)]));
 const pristine=new Set(platformIds.filter(id=>!raw[settingsKey(id)]?.labels&&!(id==='weibo'&&raw.labels)));
+const writePlatform=createPlatformWriter(chrome.storage.local);
+const savedLabels=new Map();
 const dirty=new Set();let group='topic',pendingImport=null,hasKey=!!raw.apiKey;
 const title=id=>id==='weibo'?t('weibo'):platforms[id].name;
 const current=()=>drafts.get(platform);
 function status(key,params={},error=false){$('status').textContent=t(key,params);$('status').classList.toggle('error',error);}
-function changed(){dirty.add(platform);pristine.delete(platform);status('unsaved');}
+function changed(){
+ if(JSON.stringify(current().labels)===savedLabels.get(platform))dirty.delete(platform);else dirty.add(platform);
+ pristine.delete(platform);status(dirty.has(platform)?'unsaved':'upToDate');
+}
+window.addEventListener('beforeunload',event=>{if(dirty.size){event.preventDefault();event.returnValue='';}});
 async function notify(changedPlatform){
- const tabs=await chrome.tabs.query({});
+ const tabs=await chrome.tabs.query({}).catch(()=>[]);
  await Promise.all(tabs.filter(tab=>platformFromUrl(tab.url)&&(!changedPlatform||platformFromUrl(tab.url)===changedPlatform)).map(tab=>chrome.tabs.sendMessage(tab.id,{type:'settingsChanged',...(changedPlatform?{platform:changedPlatform}:{})}).catch(()=>{})));
 }
 function renderNav(){
@@ -63,11 +70,19 @@ function renderLanguage(){
 for(const [value,name]of Object.entries(languages)){const option=document.createElement('option');option.value=value;option.textContent=name;$('language').append(option);}
 $('language').onchange=async()=>{
  const next=$('language').value;
- try{await chrome.storage.local.set({language:next});language=next;setLanguage(language);for(const id of pristine)drafts.get(id).labels=localizedDefaults(language);renderLanguage();await notify();}
+ try{await chrome.storage.local.set({language:next});language=next;setLanguage(language);for(const id of pristine){drafts.get(id).labels=localizedDefaults(language);savedLabels.set(id,JSON.stringify(drafts.get(id).labels));}renderLanguage();await notify();}
  catch(error){$('language').value=language;status(error.message,{},true);}
 };
 for(const id of pristine)drafts.get(id).labels=localizedDefaults(language);
-$('enabled').onchange=()=>{current().enabled=$('enabled').checked;changed();};
+for(const id of platformIds)savedLabels.set(id,JSON.stringify(drafts.get(id).labels));
+let pendingToggles=0;
+$('enabled').onchange=async()=>{
+ const id=platform,enabled=$('enabled').checked,previous=drafts.get(id).enabled;
+ drafts.get(id).enabled=enabled;pendingToggles++;$('enabled').disabled=true;
+ try{await writePlatform(id,{enabled});if(platform===id)status(dirty.has(id)?'unsaved':'upToDate');await notify(id);}
+ catch(error){drafts.get(id).enabled=previous;if(platform===id){$('enabled').checked=previous;status(error.message,error.params,true);}}
+ finally{pendingToggles--;$('enabled').disabled=pendingToggles>0;}
+};
 $('search').oninput=renderRows;
 for(const g of ['topic','influence']){
  $(`${g}-tab`).onclick=()=>{group=g;renderRows();};
@@ -76,9 +91,10 @@ for(const g of ['topic','influence']){
 $('add').onclick=()=>{if(current().labels.length>=labelLimits.count){status('labelLimit',{},true);return;}current().labels.push({id:crypto.randomUUID(),group,name:t('newLabel'),description:''});$('search').value='';changed();renderRows();$('groups').lastElementChild.querySelector('input').focus();};
 $('restore').onclick=()=>{if(confirm(t('restorePrompt',{platform:title(platform)}))){current().labels=localizedDefaults(language);changed();renderRows();}};
 $('save').onclick=async()=>{
- const savedPlatform=platform,snapshot=structuredClone(current());$('save').disabled=true;
- try{validateLabels(snapshot.labels);await chrome.storage.local.set({[settingsKey(savedPlatform)]:snapshot});
-  if(JSON.stringify(drafts.get(savedPlatform))===JSON.stringify(snapshot))dirty.delete(savedPlatform);
+ const savedPlatform=platform,labels=structuredClone(current().labels);$('save').disabled=true;
+ try{validateLabels(labels);await writePlatform(savedPlatform,{labels});
+  savedLabels.set(savedPlatform,JSON.stringify(labels));
+  if(JSON.stringify(drafts.get(savedPlatform).labels)===JSON.stringify(labels))dirty.delete(savedPlatform);else dirty.add(savedPlatform);
   pristine.delete(savedPlatform);await notify(savedPlatform);if(platform===savedPlatform)status(dirty.has(platform)?'unsaved':'saved',{platform:title(savedPlatform)});
  }catch(error){status(error.message,error.params,true);}finally{$('save').disabled=false;}
 };
@@ -112,7 +128,7 @@ for(const id of ['import-close','import-cancel'])$(id).onclick=()=>$('import-dia
 $('import-dialog').addEventListener('close',()=>pendingImport=null);
 $('import-apply').onclick=async()=>{
  if(!pendingImport)return;$('import-apply').disabled=true;
- try{const config=pendingImport;await chrome.storage.local.set(importedStorage(config));for(const id of platformIds)drafts.set(id,structuredClone(config.platforms[id]));dirty.clear();pristine.clear();language=config.language;setLanguage(language);renderLanguage();await notify();$('import-dialog').close();status('imported');}
+ try{const config=pendingImport;await writePlatform.replace(importedStorage(config));for(const id of platformIds){drafts.set(id,structuredClone(config.platforms[id]));savedLabels.set(id,JSON.stringify(config.platforms[id].labels));}dirty.clear();pristine.clear();language=config.language;setLanguage(language);renderLanguage();await notify();$('import-dialog').close();status('imported');}
  catch(error){status(error.message,error.params,true);}finally{$('import-apply').disabled=false;}
 };
 renderLanguage();
