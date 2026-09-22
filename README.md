@@ -1,59 +1,101 @@
-# Feed Lens
+<div align="center">
+  <img src="icons/icon-128.png" alt="Feed Lens icon" width="88" height="88">
+  <h1>Feed Lens</h1>
+  <p>Your labels. Your perspective on the feed.</p>
+  <p><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
+  <p><a href="https://github.com/SkywalkerDarren/feed-lens/releases">Download</a> · <a href="#quick-start">Quick start</a> · <a href="https://skywalkerdarren.github.io/feed-lens/privacy.html?lang=en">Privacy</a> · <a href="https://github.com/SkywalkerDarren/feed-lens/issues">Feedback</a></p>
+</div>
 
-为 **微博、Threads 和 X** 的帖子添加自定义文字标签。按“讲什么”和“如何表达”两个角度分类；每个平台独立设置，使用你自己的 TypeSafe API key。
+Feed Lens is an open-source Chrome extension that adds customizable text labels to **Weibo, Threads and X**. See what a post is about and how it communicates, using your own label definitions and TypeSafe API key.
 
-![标签组件示例：合成帖子与模拟分类结果](store/screenshot-labels.png)
+![Feed Lens labels beside post authors, using synthetic posts and simulated classification results](store/screenshot-labels.png)
 
-界面支持简体中文、英语、日语、西班牙语、意大利语和德语。Chrome 114+，Manifest V3。需要 TypeSafe 账户及可用 API 额度；API 费用由用户承担。
+*Actual label components shown with synthetic posts and simulated results.*
 
-## 使用
+## Features
 
-1. 下载源码或解压发布包。
-2. 打开 `chrome://extensions`，开启开发者模式，点击“加载已解压的扩展程序”，选择包含 `manifest.json` 的目录。
-3. 点击扩展图标，打开设置中的“API 连接”，填入并保存自己的 API key。
-4. 选择平台，开启自动标注，调整标签并保存。微博、Threads 和 X 分别设置。
-5. 刷新目标网站。标签显示在作者名字一行，最多四个；更多标签显示为 `+N`。小齿轮内可查看分值、所读文字、重试及设置。
+- **Two perspectives:** organize labels into content topics and expression styles.
+- **Independent platforms:** each platform has its own dictionary and automatic-labeling switch.
+- **Compact labels:** show up to four labels beside the author, with `+N` for more. Open the gear for scores, extracted text and retry controls.
+- **Your own rules:** edit both the displayed label and the description used for classification.
+- **Portable settings:** import and export all platform dictionaries, switches and interface language as JSON. Your API key stays in the browser.
+- **Six languages:** English, Simplified Chinese, Japanese, Spanish, Italian and German.
 
-升级时，在扩展管理页点击重新加载，再刷新社交网站。0.4.0 提供新的标签工作台、六种界面语言和配置导入导出。
+## Quick start
 
-## 数据与边界
+You need **Chrome 114+** and a **TypeSafe account with an API key and available usage allowance**. API usage is billed to your TypeSafe account.
 
-- 新用户各平台默认暂停；Key 共用，平台开关及标签独立。
-- 启用后，页面已经加载的帖子文字（含屏幕外预加载、引用及你可查看的非公开帖子）、平台名称和标签判断标准直接发往 TypeSafe。单条文字最多 12,000 字符。
-- 只分析文字，不识别图片或视频。跳过私信区域；正文中出现的姓名、链接或敏感内容仍可能随文字发送。不要在不愿发送这些内容的平台上开启自动标注。
-- Key、标签、开关和语言存于 `chrome.storage.local`，不通过 Chrome 同步。Key 不交给网页，但本机存储不是加密保险库。
-- 没有项目自建服务器、遥测或广告。TypeSafe 是独立的数据接收方，其处理与保留规则见[隐私说明](PRIVACY.md)。
-- 标签是模型判断，分值不是实测准确率；不证明事实真假或作者的真实意图。纯图片帖子通常不标注。
+1. Download `feed-lens-<version>.zip` from [Releases](https://github.com/SkywalkerDarren/feed-lens/releases) and unzip it.
+2. Open `chrome://extensions`, enable **Developer mode**, then choose **Load unpacked**.
+3. Select the extracted folder containing `manifest.json`.
+4. Open Feed Lens settings. Choose **API connection**, enter your key and save it.
+5. Select Weibo, Threads or X, turn on automatic labeling, and save that platform.
+6. Refresh the social website to start labeling loaded posts.
 
-## 配置与标签
+New installations start with all platforms paused. The API key is shared across platforms; dictionaries and switches are separate.
 
-顶部工具栏可导入、导出 JSON 配置，包含三平台标签、开关和语言；API Key 保留在本机。导入显示摘要后再保存。标签显示必填、最多 30 字符；标签描述必填、最多 400 字符。每个平台最多 60 个标签，具体请求预算见 [约束说明](docs/label-limits.md)。
+**Updating:** replace the files in your existing extension folder, click **Reload** on the extension card, then refresh the social website. Keep the same folder to retain the extension's identity and local settings.
 
-## 调度
+## Customize your labels
 
-DOM 变化后约 250 ms 扫描、正文稳定约 350 ms 后检测，不要求帖子进入屏幕。后台最多并发 8 个任务。相同平台、Key、标签定义和文字的同时请求合并；结果暂存在后台内存（最多 300 条），设置变化或后台重启会清空。
+![Feed Lens settings with platform navigation and editable label columns](store/screenshot-settings.png)
 
-临时服务错误独立退避重试，最多 4 次请求；单次请求含响应读取最多 20 秒、处理预算 45 秒、排队最多 60 秒。页面 110 秒保护会结束等待并提供重试，不会无限显示“正在分析”。服务可用性取决于 TypeSafe。
+Choose a platform in the sidebar, then select **Content topics** or **Expression styles**. Add, search, edit or remove labels and save the current platform. Switching platforms retains your unsaved edits while the settings page remains open.
 
-## 开发与打包
+| Field | Purpose | Limit |
+| --- | --- | --- |
+| Label display | Text shown beside the post author | Required; up to 30 characters |
+| Label description | Criteria used to decide whether the label matches | Required; up to 400 characters |
+| Dictionary | Labels across both groups | Up to 60 per platform |
 
-无运行时第三方依赖，无构建步骤。Node.js 22+、Python 3.9+：
+For example, use **Hands-on review** as the display text and **Describes the author's direct experience using a product, including observations about its performance or usability** as the description.
+
+Character limits use UTF-16 code units, matching browser input limits. Requests also have a combined size budget; see [label and request limits](docs/label-limits.md).
+
+Changing the interface language preserves saved custom labels. **Restore presets** loads the default labels in the selected language for the current platform.
+
+### Import and export
+
+- **Export** downloads the current dictionaries, switches and language, including valid unsaved label edits.
+- **Import** validates a JSON file of up to 1 MiB and shows a summary. Confirming it replaces and saves settings for all three platforms; your API key remains unchanged.
+- Both paths validate label names and descriptions. Keep an export before replacing a dictionary you want to reuse.
+
+## Data and processing
+
+Enabled platforms send loaded post text, the platform name and your label rules **directly to TypeSafe**. This can include off-screen preloaded posts, quoted text and non-public posts you can access. Classification uses extracted text, capped at 12,000 characters per post.
+
+Your key and settings are stored locally in `chrome.storage.local`, without Chrome sync. Feed Lens operates no relay server, telemetry or advertising system. See the [privacy notice](https://skywalkerdarren.github.io/feed-lens/privacy.html?lang=en) for data scope, storage and controls.
+
+The extension detects stable post text as the page loads. Up to eight background tasks run concurrently; matching in-flight requests are merged, and up to 300 recent results are cached in background memory. Temporary service errors retry independently with bounded timeouts. The gear menu shows progress and recovery actions.
+
+## Development
+
+The extension uses Manifest V3 and plain JavaScript. No npm dependencies or compilation step are required. Use **Node.js 22+** and **Python 3.9+**.
 
 ```sh
+git clone https://github.com/SkywalkerDarren/feed-lens.git
+cd feed-lens
 npm test
 npm run package
 ```
 
-输出 `dist/feed-lens-0.4.0.zip`，根目录即 `manifest.json`。打包使用明确文件清单，排除测试、截图、配置示例及本机文件。发布仓库不会带入浏览器存储中的 Key。
+The package is written to `dist/feed-lens-<version>.zip`, with `manifest.json` at its root. Only runtime files and license notices are included.
 
-- `adapters.js`：平台 DOM 提取；新增平台应分别验证正文、引用、重渲染、编辑器和私信排除。
-- `content.js`：标签、折叠详情及动态帖子监听。
-- `platforms.js`：站点识别、独立设置及旧微博配置迁移。
-- `background.js` / `transport.js`：发送者校验、平台开关检查、缓存、去重和请求调度。
-- `options.*`：Key、导入导出及平台标签编辑。
+| File | Responsibility |
+| --- | --- |
+| `adapters.js` | Platform-specific post extraction |
+| `content.js` | Inline labels, detail panel and dynamic post detection |
+| `platforms.js` | Platform settings and legacy Weibo configuration migration |
+| `background.js`, `transport.js` | Request validation, scheduling, retries, deduplication and cache |
+| `options.*`, `config.js` | Settings workspace and configuration import/export |
+| `i18n.js`, `presets.js`, `_locales/` | Interface translations and localized default labels |
 
-自动化测试覆盖请求调度、输入/输出校验和设置隔离；不等于所有线上页面已验证。网站 DOM 会变化，支持信息流不意味着适配所有页面。商店上架状态以商店实际页面为准。
+Automated tests cover validation, settings isolation and request handling. For platform changes, also check current live pages and record the browser version and reproduction steps. See [Contributing](CONTRIBUTING.md).
 
-## 开源
+## Releases and support
 
-[Apache-2.0](LICENSE)。贡献指南见 [CONTRIBUTING.md](CONTRIBUTING.md)，安全报告见 [SECURITY.md](SECURITY.md)。本项目与所支持平台、Google 及 TypeSafe 无隶属关系。
+[Releases](https://github.com/SkywalkerDarren/feed-lens/releases) provide the extension ZIP and Chrome Web Store materials. Version 0.4.0 is a **prerelease**; Chrome Web Store submission is pending.
+
+Report reproducible bugs in [Issues](https://github.com/SkywalkerDarren/feed-lens/issues). For privacy or security matters, contact [contact@darrenis.top](mailto:contact@darrenis.top); see [Security](SECURITY.md).
+
+Licensed under [Apache-2.0](LICENSE). Feed Lens is an independent project, unaffiliated with the supported social platforms, Google or TypeSafe.
